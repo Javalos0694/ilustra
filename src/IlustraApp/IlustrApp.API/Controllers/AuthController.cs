@@ -33,7 +33,7 @@ namespace IlustrApp.API.Controllers
             if (result.Code != Result.OK)
                 return ResultResponse(result);
 
-            var token = Token.BuildToken(user.Username, user.IdPerson, user.IdUser, user.IdUserType, Configuration["Security:Token"]);
+            var token = SecurityToken.BuildToken(user.Username, user.IdPerson, user.IdUser, user.IdUserType, Configuration["Security:Token"]);
 
             return Ok(new
             {

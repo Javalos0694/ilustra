@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Security
 {
-    public static class Token
+    public static class SecurityToken
     {
         public static string BuildToken(string username, int idPerson, int idUser, int userType, string securityKey)
         {

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace IlustraApp.Core.Entities
+﻿namespace IlustraApp.Core.Entities
 {
     public partial class User
     {
         public User()
         {
             Ally = new HashSet<Ally>();
+            Coupon = new HashSet<Coupon>();
             ShoppingCart = new HashSet<ShoppingCart>();
         }
 
@@ -25,6 +23,7 @@ namespace IlustraApp.Core.Entities
         public virtual Person IdPersonNavigation { get; set; } = null!;
         public virtual UserType IdUserTypeNavigation { get; set; } = null!;
         public virtual ICollection<Ally> Ally { get; set; }
+        public virtual ICollection<Coupon> Coupon { get; set; }
         public virtual ICollection<ShoppingCart> ShoppingCart { get; set; }
     }
 }

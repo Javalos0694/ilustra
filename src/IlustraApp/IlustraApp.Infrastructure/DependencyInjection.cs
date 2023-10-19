@@ -16,6 +16,7 @@ namespace IlustraApp.Infrastructure
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IBaseRepository, BaseRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IColorRepository, ColorRepository>();
 
             return services;
         }

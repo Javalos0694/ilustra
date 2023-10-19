@@ -17,6 +17,8 @@ namespace IlustraApp.Infrastructure.Data
         public virtual DbSet<Ally> Ally { get; set; } = null!;
         public virtual DbSet<Color> Color { get; set; } = null!;
         public virtual DbSet<ColorXproduct> ColorXproduct { get; set; } = null!;
+        public virtual DbSet<Coupon> Coupon { get; set; } = null!;
+        public virtual DbSet<CouponType> CouponType { get; set; } = null!;
         public virtual DbSet<Design> Design { get; set; } = null!;
         public virtual DbSet<DesignProduct> DesignProduct { get; set; } = null!;
         public virtual DbSet<Dimension> Dimension { get; set; } = null!;
@@ -142,6 +144,97 @@ namespace IlustraApp.Infrastructure.Data
                     .HasForeignKey(d => d.IdProduct)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Product_Color");
+            });
+
+            modelBuilder.Entity<Coupon>(entity =>
+            {
+                entity.HasKey(e => e.IdCoupon)
+                    .HasName("PK_idCoupon");
+
+                entity.HasIndex(e => e.CouponName, "UQ__Coupon__DC24DC873E8A8A8D")
+                    .IsUnique();
+
+                entity.Property(e => e.IdCoupon).HasColumnName("idCoupon");
+
+                entity.Property(e => e.CouponCode)
+                    .HasMaxLength(8)
+                    .IsUnicode(false)
+                    .HasColumnName("couponCode");
+
+                entity.Property(e => e.CouponName)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("couponName");
+
+                entity.Property(e => e.CouponValue)
+                    .HasColumnType("decimal(9, 2)")
+                    .HasColumnName("couponValue");
+
+                entity.Property(e => e.CreatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("createdAt")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Deleted).HasColumnName("deleted");
+
+                entity.Property(e => e.ExpirationDate)
+                    .HasColumnType("date")
+                    .HasColumnName("expirationDate")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.IdCouponType).HasColumnName("idCouponType");
+
+                entity.Property(e => e.IdUser).HasColumnName("idUser");
+
+                entity.Property(e => e.IsAvailable)
+                    .IsRequired()
+                    .HasColumnName("isAvailable")
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.LimitQuantityUse).HasColumnName("limitQuantityUse");
+
+                entity.Property(e => e.UpdatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("updatedAt")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.UseQuantity).HasColumnName("useQuantity");
+
+                entity.HasOne(d => d.IdCouponTypeNavigation)
+                    .WithMany(p => p.Coupon)
+                    .HasForeignKey(d => d.IdCouponType)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CouponType_Coupon");
+
+                entity.HasOne(d => d.IdUserNavigation)
+                    .WithMany(p => p.Coupon)
+                    .HasForeignKey(d => d.IdUser)
+                    .HasConstraintName("FK_Coupon_User");
+            });
+
+            modelBuilder.Entity<CouponType>(entity =>
+            {
+                entity.HasKey(e => e.IdCouponType)
+                    .HasName("PK_idCouponTpye");
+
+                entity.Property(e => e.IdCouponType).HasColumnName("idCouponType");
+
+                entity.Property(e => e.CouponTypeName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("couponTypeName");
+
+                entity.Property(e => e.CreatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("createdAt")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Deleted).HasColumnName("deleted");
+
+                entity.Property(e => e.UpdatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("updatedAt")
+                    .HasDefaultValueSql("(getdate())");
             });
 
             modelBuilder.Entity<Design>(entity =>
