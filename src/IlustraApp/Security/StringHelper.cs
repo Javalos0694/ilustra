@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Security
 {
@@ -6,6 +7,7 @@ namespace Security
     {
         private const string ValidCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         private const string SpecialCharacters = "!@#$%&()+-=[]{}|'\"?/";
+        private const string FORMAT_PASSWORD = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=*!])[A-Za-z\d@#$%^&+=*!]{8,}$";
 
         public static string GenerateUniqueCode(int? length = null)
         {
@@ -31,6 +33,12 @@ namespace Security
             string newPassword = new string(password.ToString().ToCharArray().Shuffle());
 
             return newPassword;
+        }
+
+        public static bool IsCorrectPasswordFormat(string password)
+        {
+            Regex regex = new Regex(FORMAT_PASSWORD);
+            return regex.IsMatch(password);
         }
     }
 

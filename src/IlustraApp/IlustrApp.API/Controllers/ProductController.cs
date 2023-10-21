@@ -1,4 +1,5 @@
 ﻿using IlustraApp.Core.Bussiness.BProduct.Request;
+using IlustraApp.Core.Bussiness.BProduct.Response;
 using IlustraApp.Core.Bussiness.BProduct.Validate;
 using IlustraApp.Infrastructure.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -23,15 +24,15 @@ namespace IlustrApp.API.Controllers
         public async Task<IActionResult> GetProducts()
         {
             var products = await ProductRepository.GetProducts();
-            return Ok(products);
+            return Ok(new ProductsResponse(products));
         }
 
         [HttpGet]
         [Route("products/category")]
         public async Task<IActionResult> GetProductsByCategory([FromQuery] int productCategory)
         {
-            var producst = await ProductRepository.GetProductsByCategory(productCategory);
-            return Ok(producst);
+            var products = await ProductRepository.GetProductsByCategory(productCategory);
+            return Ok(new ProductsResponse(products));
         }
 
         [HttpPost]
@@ -55,7 +56,7 @@ namespace IlustrApp.API.Controllers
             var product = await ProductRepository.GetProductById(idProduct);
             if (product == null) return ResultResponse(new Result { Code = Result.NOT_FOUND, Type = "product_not_found", Message = "Product not found." });
 
-            return Ok(product);
+            return Ok(new ProductResponse(product));
         }
 
         [HttpPut]

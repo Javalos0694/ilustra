@@ -20,7 +20,7 @@ namespace IlustraApp.Infrastructure.Repository
 
         public async Task<List<User>> FindAll()
         {
-            return await Context.User.Include(p => p.IdPersonNavigation).Where(x => !x.Deleted).ToListAsync();
+            return await Context.User.Include(x => x.IdPersonNavigation).Where(x => !x.Deleted).ToListAsync();
         }
 
         public async Task<List<User>> FindAllByFilters(int? userType, string username)

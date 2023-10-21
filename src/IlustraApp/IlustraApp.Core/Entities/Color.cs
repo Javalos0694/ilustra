@@ -15,7 +15,7 @@ namespace IlustraApp.Core.Entities
         public string ColorCode { get; set; } = null!;
         public decimal BasePrice { get; set; }
         public byte[] ImageColor { get; set; } = null!;
-        public bool? IsAvailable { get; set; }
+        public bool IsAvailable { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public bool Deleted { get; set; }

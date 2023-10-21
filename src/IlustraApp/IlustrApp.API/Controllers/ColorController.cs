@@ -1,4 +1,5 @@
 ﻿using IlustraApp.Core.Bussiness.BColor.Request;
+using IlustraApp.Core.Bussiness.BColor.Response;
 using IlustraApp.Core.Bussiness.BColor.Validate;
 using IlustraApp.Infrastructure.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -52,7 +53,7 @@ namespace IlustrApp.API.Controllers
         public async Task<IActionResult> GetColors()
         {
             var colors = await ColorRepository.GetAllColors();
-            return Ok(colors);
+            return Ok(new ColorsResponse(colors));
         }
 
         [HttpGet]
@@ -61,7 +62,7 @@ namespace IlustrApp.API.Controllers
         {
             var color = await ColorRepository.GetColorById(idColor);
             if (color == null) return ResultResponse(new Result { Code = Result.NOT_FOUND, Type = "color_not_found", Message = "Color not found" });
-            return Ok(color);
+            return Ok(new ColorResponse(color));
         }
 
         [HttpPut]
@@ -72,7 +73,7 @@ namespace IlustrApp.API.Controllers
             if (color == null) return ResultResponse(new Result { Code = Result.NOT_FOUND, Type = "color_not_found", Message = "Color not found" });
 
             color.IsAvailable = !color.IsAvailable;
-            return Ok(color);
+            return ResultResponse(new Result());
         }
 
         [HttpDelete]
@@ -83,7 +84,7 @@ namespace IlustrApp.API.Controllers
             if (color == null) return ResultResponse(new Result { Code = Result.NOT_FOUND, Type = "color_not_found", Message = "Color not found" });
 
             color.Deleted = true;
-            return Ok(color);
+            return ResultResponse(new Result());
         }
     }
 }
