@@ -66,7 +66,7 @@ namespace IlustraApp.Core.Bussiness.Auth.Validate
         }
         public Result ValidatePassword()
         {
-            if (Crypto.VerifyPassword(Request.Password ?? "", UserValidate.Password))
+            if (!Crypto.VerifyPassword(Request.Password ?? "", UserValidate.Password))
             {
                 return new Result
                 {
