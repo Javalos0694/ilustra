@@ -2,6 +2,7 @@
 using IlustraApp.Core.Bussiness.BUser.Response;
 using IlustraApp.Core.Bussiness.BUser.Validate;
 using IlustraApp.Infrastructure.Repository.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -9,6 +10,7 @@ namespace IlustrApp.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : BaseController
     {
         private readonly IUserRepository UserRepository;
@@ -35,6 +37,15 @@ namespace IlustrApp.API.Controllers
         {
             var user = await UserRepository.FindUserById(idUser);
             if (user == null) return ResultResponse(new Result { Code = Result.NOT_FOUND, Type = "user_not_found", Message = "User not found" });
+            return Ok(new UserResponse(user));
+        }
+
+        [HttpGet]
+        [Route("account")]
+        public async Task<IActionResult> GetUserByToken()
+        {
+            var user = await UserRepository.FindUserById(IdLoggedUser);
+            if(user == null) return ResultResponse(new Result { Code = Result.NOT_FOUND, Type = "user_not_found", Message = "User not found" });
             return Ok(new UserResponse(user));
         }
 

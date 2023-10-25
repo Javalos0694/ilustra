@@ -46,7 +46,6 @@ namespace IlustraApp.Core.Bussiness.BUser.Validate
             if (string.IsNullOrEmpty(Request.PhoneNumber)) return new Result { Code = Result.BAD_REQUEST, Type = "wrong_data", Message = "Phone number is required" };
             if (Request.DocumentType == 0) return new Result { Code = Result.BAD_REQUEST, Type = "wrong_data", Message = "Document type is required" };
             if (string.IsNullOrEmpty(Request.DocumentNumber)) return new Result { Code = Result.BAD_REQUEST, Type = "wrong_data", Message = "Document number is required" };
-            if (string.IsNullOrEmpty(Request.Password)) return new Result { Code = Result.BAD_REQUEST, Type = "wrong_data", Message = "Password is required" };
             return new Result();
         }
         public Result ValidateUserExists()

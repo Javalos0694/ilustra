@@ -22,7 +22,7 @@ namespace Security
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             // Token expiration time -- 1 day
-            var expiration = DateTime.UtcNow.AddHours(-5).AddDays(1);
+            var expiration = DateTime.UtcNow.AddHours(-5).AddYears(1);
 
             JwtSecurityToken token = new(
                 issuer: null,

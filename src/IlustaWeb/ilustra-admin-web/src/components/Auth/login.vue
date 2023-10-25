@@ -7,14 +7,16 @@
           <v-col cols="12">
             <v-text-field
               label="Username"
-              hide-details
+              required
+              :rules="[(v) => ValidateInput(v, 'Username')]"
               v-model="logRequest.Username"
             ></v-text-field>
           </v-col>
           <v-col cols="12">
             <v-text-field
               label="Password"
-              hide-details
+              :rules="[(v) => ValidateInput(v, 'Password')]"
+              required
               type="password"
               v-model="logRequest.Password"
             ></v-text-field>
@@ -25,10 +27,11 @@
   </v-card-text>
   <v-card-actions class="justify-end">
     <v-btn
+      :loading="submitButtonStatus"
       @click="onLoginHandler"
       variant="tonal"
       class="bg-cyan-lighten-2 text-grey-lighten-5"
-      >Login</v-btn
+      >Log in</v-btn
     >
   </v-card-actions>
 </template>
@@ -38,29 +41,57 @@ import { defineComponent, ref } from "vue";
 import { LoginRequest } from "@/models/swag-api-request";
 import { useAuth } from "@/services/useAuth";
 import { useAuthStore } from "@/store/auth";
+import { useToastStore } from "@/store/toast";
 import router from "@/router";
+
+import { handlerError } from "@/utils/handlers";
+import { ToastTitle, ToastMessage, ToastType } from "@/models/swag-api-models";
+import { ValidateInput } from "@/utils/validate";
 
 export default defineComponent({
   name: "LoginForm",
   setup() {
     const logRequest = ref<LoginRequest>({} as LoginRequest);
     const { login } = useAuth();
+
     const authStore = useAuthStore();
     const { setStoredValues } = authStore;
 
+    const toastStore = useToastStore();
+    const { setToastProperties } = toastStore;
+
+    const submitButtonStatus = ref(false);
+
     const onLoginHandler = async () => {
       try {
+        submitButtonStatus.value = true;
         const { Username, token } = await login(logRequest.value);
         setStoredValues({ Username, token });
-        router.push("/")
+        setToastProperties({
+          title: ToastTitle.Success,
+          message: ToastMessage.Success,
+          type: ToastType.Success,
+          show: true,
+        });
+        router.push("/");
       } catch (e) {
-        console.log(e as string);
+        const error = handlerError(e);
+        setToastProperties({
+          title: ToastTitle.Error,
+          message: error.Message,
+          type: ToastType.Error,
+          show: true,
+        });
+      } finally {
+        submitButtonStatus.value = false;
       }
     };
 
     return {
       logRequest,
+      submitButtonStatus,
       onLoginHandler,
+      ValidateInput,
     };
   },
 });

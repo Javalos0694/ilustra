@@ -27,7 +27,7 @@ const handleHeadersParams = (params: paramsApi) => {
     if (!params.token) return {}
 
     const headers = {
-        "Authorization": `Bearer ${tokenStored}`
+        "Authorization": `bearer ${tokenStored.value}`
     }
 
     return headers;
@@ -36,7 +36,7 @@ const handleHeadersParams = (params: paramsApi) => {
 
 const api = {
     async get<T>(endpoint: string, params: paramsApi = {}) {
-        const url = `${config.ApiUrl}${endpoint}${!params.id ? '0' : `/${params.id}`}`
+        const url = `${config.ApiUrl}${endpoint}${!params.id ? '' : `/${params.id}`}`
         const headers = handleHeadersParams(params);
         const axiosConfig: AxiosRequestConfig = {
             url,

@@ -10,6 +10,7 @@ namespace IlustraApp.Core.Bussiness.BUser.Response
         public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string PhoneNumber { get; set; }
         public int DocumentType { get; set; }
         public string DocumentNumber { get; set; }
         public string Email { get; set; }
@@ -21,6 +22,7 @@ namespace IlustraApp.Core.Bussiness.BUser.Response
             UserType = user.IdUserType;
             UserName = user.Username;
             Password = user.Password;
+            PhoneNumber = user.IdPersonNavigation.PhoneNumber;
             FirstName = user.IdPersonNavigation.FirstName;
             LastName = user.IdPersonNavigation.LastName;
             BornDate = user.IdPersonNavigation.BornDate;
