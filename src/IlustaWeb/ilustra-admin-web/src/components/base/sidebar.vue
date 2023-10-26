@@ -75,7 +75,10 @@ export default defineComponent({
     };
 
     const logout = () => {
-      if (!rail.value) setStoredValues({});
+      if (!rail.value) {
+        setStoredValues({});
+        router.push({ name: "Login" });
+      }
     };
 
     return {

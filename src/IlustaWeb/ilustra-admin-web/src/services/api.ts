@@ -1,26 +1,53 @@
 import { paramsApi } from "@/models/swag-api-request"
 import { config } from "@/config"
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import router from "@/router"
 import { useAuthStore } from "@/store/auth"
 import { storeToRefs } from "pinia"
+import { useToastStore } from "@/store/toast"
+import { ToastMessage, ToastTitle, ToastType } from "@/models/swag-api-models"
 
 const authStore = useAuthStore();
+const { setStoredValues } = authStore;
 const { tokenStored } = storeToRefs(authStore);
 
+const { setToastProperties } = useToastStore();
 
-const handleResponse = async (response: AxiosResponse) => {
-    const data = await response.data;
-    if (response.status === 401) {
-        router.push({ name: "Login" })
-        throw new Error("Unauthorized")
-    }
+const handleToastEvent = (toastType: ToastType, message: string = "") => {
+    if (toastType == ToastType.Success) setToastProperties({ message: ToastTitle.Success, type: toastType, show: true })
+    if (toastType == ToastType.Info) setToastProperties({ title: ToastTitle.Success, type: ToastType.Success, message: ToastMessage.Saved, show: true })
+    if (toastType == ToastType.Error) setToastProperties({ title: ToastTitle.Error, type: toastType, message, show: true })
+}
 
-    if (response.status !== 401 && response.status !== 200) {
-        const error = (data && data.Message) || response.statusText;
-        throw new Error(error);
+const handlerAxiosEvent = async (axiosConfig: AxiosRequestConfig): Promise<any> => {
+    try {
+        const response = await axios(axiosConfig);
+        const data = await response.data;
+
+        if (!data.Code) handleToastEvent(ToastType.Success);
+        else handleToastEvent(ToastType.Info, data.Message);
+
+        return data;
+    } catch (error) {
+        handleErrorResponse(error);
     }
-    return data;
+}
+
+const handleErrorResponse = (errorResponse: any) => {
+    if (errorResponse instanceof AxiosError) {
+        const { response } = errorResponse;
+        const data = response?.data;
+        if (response?.status === 401) {
+            setStoredValues({});
+            handleToastEvent(ToastType.Error, data.length > 0 ? data.Message : data)
+            router.push({ name: "Login" })
+            return;
+        }
+        handleToastEvent(ToastType.Error, data.Message)
+        return;
+    } else {
+        handleToastEvent(ToastType.Error, "Contact with admin");
+    }
 }
 
 const handleHeadersParams = (params: paramsApi) => {
@@ -43,8 +70,7 @@ const api = {
             headers
         }
 
-        const response = await axios(axiosConfig);
-        const data = await handleResponse(response);
+        const data = await handlerAxiosEvent(axiosConfig);
         return data as T;
     },
 
@@ -59,8 +85,7 @@ const api = {
             headers
         };
 
-        const response = await axios(axiosConfig);
-        const dataResponse = await handleResponse(response);
+        const dataResponse = await handlerAxiosEvent(axiosConfig);
         return dataResponse as T;
     },
 
@@ -76,8 +101,7 @@ const api = {
             headers
         }
 
-        const response = await axios(axiosConfig);
-        const dataResponse = await handleResponse(response);
+        const dataResponse = await handlerAxiosEvent(axiosConfig);
         return dataResponse as T;
     },
     async delete<T>(endpoint: string, params: paramsApi = {}) {
@@ -89,8 +113,7 @@ const api = {
             headers
         }
 
-        const response = await axios(axiosConfig);
-        const data = await handleResponse(response);
+        const data = await handlerAxiosEvent(axiosConfig);
         return data as T;
     }
 }

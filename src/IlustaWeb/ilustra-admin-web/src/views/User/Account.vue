@@ -93,20 +93,20 @@ export default defineComponent({
         setRequest();
         await putUserById(user.value.IdUser, request.value);
         btnStatus.value = true;
-        setToastProperties({
-          title: ToastTitle.Success,
-          message: ToastMessage.Saved,
-          type: ToastType.Success,
-          show: true,
-        });
+        // setToastProperties({
+        //   title: ToastTitle.Success,
+        //   message: ToastMessage.Saved,
+        //   type: ToastType.Success,
+        //   show: true,
+        // });
       } catch (e) {
         const error = handlerError(e);
-        setToastProperties({
-          title: ToastTitle.Error,
-          message: error.Message,
-          type: ToastType.Error,
-          show: true,
-        });
+        // setToastProperties({
+        //   title: ToastTitle.Error,
+        //   message: error.Message,
+        //   type: ToastType.Error,
+        //   show: true,
+        // });
       } finally {
         btnStatus.value = false;
       }
@@ -117,7 +117,11 @@ export default defineComponent({
     };
 
     onMounted(async () => {
-      user.value = await getUserAccount();
+      try {
+        user.value = await getUserAccount();
+      } catch (error) {
+        console.log(error);
+      }
     });
 
     return { user, btnStatus, setDate, onSubmitChanges };

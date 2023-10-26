@@ -41,12 +41,10 @@ import { defineComponent, ref } from "vue";
 import { LoginRequest } from "@/models/swag-api-request";
 import { useAuth } from "@/services/useAuth";
 import { useAuthStore } from "@/store/auth";
-import { useToastStore } from "@/store/toast";
 import router from "@/router";
 
-import { handlerError } from "@/utils/handlers";
-import { ToastTitle, ToastMessage, ToastType } from "@/models/swag-api-models";
 import { ValidateInput } from "@/utils/validate";
+import { storeToRefs } from "pinia";
 
 export default defineComponent({
   name: "LoginForm",
@@ -55,36 +53,17 @@ export default defineComponent({
     const { login } = useAuth();
 
     const authStore = useAuthStore();
+    const { tokenStored } = storeToRefs(authStore);
     const { setStoredValues } = authStore;
-
-    const toastStore = useToastStore();
-    const { setToastProperties } = toastStore;
 
     const submitButtonStatus = ref(false);
 
     const onLoginHandler = async () => {
-      try {
-        submitButtonStatus.value = true;
-        const { Username, token } = await login(logRequest.value);
-        setStoredValues({ Username, token });
-        setToastProperties({
-          title: ToastTitle.Success,
-          message: ToastMessage.Success,
-          type: ToastType.Success,
-          show: true,
-        });
-        router.push("/");
-      } catch (e) {
-        const error = handlerError(e);
-        setToastProperties({
-          title: ToastTitle.Error,
-          message: error.Message,
-          type: ToastType.Error,
-          show: true,
-        });
-      } finally {
-        submitButtonStatus.value = false;
-      }
+      submitButtonStatus.value = true;
+      const { Username, token } = await login(logRequest.value);
+      setStoredValues({ Username, token });
+      submitButtonStatus.value = false;
+      if (tokenStored.value.length > 0) router.push("/");
     };
 
     return {
