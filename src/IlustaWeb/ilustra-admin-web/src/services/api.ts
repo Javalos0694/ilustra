@@ -6,12 +6,15 @@ import { useAuthStore } from "@/store/auth"
 import { storeToRefs } from "pinia"
 import { useToastStore } from "@/store/toast"
 import { ToastMessage, ToastTitle, ToastType } from "@/models/swag-api-models"
+import { useLoaderStore } from "@/store/loader"
 
 const authStore = useAuthStore();
 const { setStoredValues } = authStore;
 const { tokenStored } = storeToRefs(authStore);
 
 const { setToastProperties } = useToastStore();
+
+const { setLoaderState } = useLoaderStore();
 
 const handleToastEvent = (toastType: ToastType, message: string = "") => {
     if (toastType == ToastType.Success) setToastProperties({ message: ToastTitle.Success, type: toastType, show: true })
@@ -21,15 +24,18 @@ const handleToastEvent = (toastType: ToastType, message: string = "") => {
 
 const handlerAxiosEvent = async (axiosConfig: AxiosRequestConfig): Promise<any> => {
     try {
+        setLoaderState(true);
         const response = await axios(axiosConfig);
         const data = await response.data;
 
-        if (!data.Code) handleToastEvent(ToastType.Success);
-        else handleToastEvent(ToastType.Info, data.Message);
+        if (data.Code && !data.Message) handleToastEvent(ToastType.Success);
+        if (data.Code) handleToastEvent(ToastType.Info, data.Message || ToastMessage.Saved);
 
         return data;
     } catch (error) {
         handleErrorResponse(error);
+    } finally {
+        setLoaderState(false);
     }
 }
 
@@ -41,6 +47,10 @@ const handleErrorResponse = (errorResponse: any) => {
             setStoredValues({});
             handleToastEvent(ToastType.Error, data.length > 0 ? data.Message : data)
             router.push({ name: "Login" })
+            return;
+        }
+        if (response?.status === 404 && !data.Message) {
+            handleToastEvent(ToastType.Error, "No service found")
             return;
         }
         handleToastEvent(ToastType.Error, data.Message)

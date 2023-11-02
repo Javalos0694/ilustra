@@ -1,6 +1,8 @@
 ﻿using IlustraApp.Core.Bussiness.BProductCategory.Request;
+using IlustraApp.Core.Bussiness.BProductCategory.Response;
 using IlustraApp.Core.Bussiness.BProductCategory.Validate;
 using IlustraApp.Infrastructure.Repository.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -8,6 +10,7 @@ namespace IlustrApp.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductCategoryController : BaseController
     {
         private readonly IProductRepository ProductRepository;
@@ -24,7 +27,7 @@ namespace IlustrApp.API.Controllers
         public async Task<IActionResult> GetProductCategories()
         {
             var categories = await ProductRepository.GetProductCategories();
-            return Ok(categories);
+            return Ok(new CategoriesResponse(categories));
         }
 
         [HttpPost]
@@ -47,7 +50,7 @@ namespace IlustrApp.API.Controllers
         {
             var category = await ProductRepository.GetProductCategoryById(idCategory);
             if (category == null) return ResultResponse(new Result { Code = Result.NOT_FOUND, Type = "category_not_found", Message = "Category not found" });
-            return Ok(category);
+            return Ok(new CategoryResponse(category));
         }
 
         [HttpPut]

@@ -2,6 +2,7 @@
 using IlustraApp.Core.Bussiness.BProduct.Response;
 using IlustraApp.Core.Bussiness.BProduct.Validate;
 using IlustraApp.Infrastructure.Repository.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -9,6 +10,7 @@ namespace IlustrApp.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductController : BaseController
     {
         private readonly IProductRepository ProductRepository;

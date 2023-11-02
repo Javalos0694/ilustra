@@ -1,39 +1,38 @@
 <template>
   <v-app>
-    <v-main class="d-flex">
-      <sidebar v-if="tokenStored.length > 0" />
-      <router-view v-if="tokenStored.length == 0" />
-      <v-container fluid v-if="tokenStored.length > 0" class="px-5 py-5">
-        <v-card class="px-4 py-4">
-          <router-view />
-        </v-card>
-      </v-container>
-    </v-main>
+    <router-view />
     <toast />
+    <Loader v-if="showLoader" />
   </v-app>
 </template>
 
 <script lang="ts">
 import { defineComponent, watch } from "vue";
 import toast from "@/components/base/toast.vue";
-import sidebar from "@/components/base/sidebar.vue";
+import Loader from "@/components/base/loader.vue";
 import { useAuthStore } from "./store/auth";
+import { useLoaderStore } from "./store/loader";
 import { storeToRefs } from "pinia";
 import router from "./router";
 
 export default defineComponent({
   name: "App",
-  components: { toast, sidebar },
+  components: { toast, Loader },
   setup() {
     const authStore = useAuthStore();
     const { tokenStored } = storeToRefs(authStore);
+
+    const loaderStore = useLoaderStore();
+    const { showLoader } = storeToRefs(loaderStore);
+
     watch(tokenStored, () => {
       if (tokenStored.value.length == 0) {
         router.push("/login");
       }
     });
+
     return {
-      tokenStored,
+      showLoader,
     };
   },
 });

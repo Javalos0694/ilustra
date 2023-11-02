@@ -37,6 +37,7 @@ namespace IlustrApp.API.Controllers
 
             return Ok(new
             {
+                Code = Result.OK,
                 user.Username,
                 token,
             });

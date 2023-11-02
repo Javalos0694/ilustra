@@ -40,6 +40,18 @@
           value="users"
           @click="goToView('/users')"
         ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-bus-double-decker"
+          title="Products"
+          value="products"
+          @click="goToView('/products')"
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-cogs"
+          title="Master"
+          value="master"
+          @click="goToView('/master')"
+        ></v-list-item>
       </v-list>
       <template v-slot:append>
         <v-list density="compact" nav>

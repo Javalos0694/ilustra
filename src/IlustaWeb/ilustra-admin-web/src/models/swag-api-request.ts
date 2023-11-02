@@ -24,3 +24,29 @@ export interface UpdatePersonRequest {
     BornDate: string,
     PhoneNumber: string,
 }
+
+//PRODUCT
+export interface ProductRequest {
+    ProductCategory: number,
+    ProductName: string,
+    Description?: string,
+    BasePrice: number,
+    IsAvailable: boolean
+}
+
+//COLOR
+export interface ColorRequest {
+    IdColor: number,
+    ColorName: string,
+    ColorCode?: string,
+    BasePrice: number,
+    IsAvailable: boolean
+}
+
+//CATEGORY
+
+export interface CategoryRequest {
+    IdProductCategory: number,
+    Category: string,
+    Description: string
+}

@@ -59,20 +59,16 @@
 
 <script lang="ts">
 import { PersonResponse } from "@/models/swag-api-response";
-import { useToastStore } from "@/store/toast";
 import { useUser } from "@/services/useUser";
 import { defineComponent, onMounted, ref } from "vue";
 import InputDate from "@/components/base/Inputs/input-date.vue";
 import { UpdatePersonRequest } from "@/models/swag-api-request";
-import { ToastMessage, ToastTitle, ToastType } from "@/models/swag-api-models";
-import { handlerError } from "@/utils/handlers";
 
 export default defineComponent({
   name: "Account",
   components: { InputDate },
   setup() {
     const { getUserAccount, putUserById, initUpdateUserRequest } = useUser();
-    const { setToastProperties } = useToastStore();
     const user = ref<PersonResponse>({} as PersonResponse);
     const request = ref<UpdatePersonRequest>(initUpdateUserRequest());
     const btnStatus = ref(false);
@@ -89,27 +85,10 @@ export default defineComponent({
     };
 
     const onSubmitChanges = async () => {
-      try {
-        setRequest();
-        await putUserById(user.value.IdUser, request.value);
-        btnStatus.value = true;
-        // setToastProperties({
-        //   title: ToastTitle.Success,
-        //   message: ToastMessage.Saved,
-        //   type: ToastType.Success,
-        //   show: true,
-        // });
-      } catch (e) {
-        const error = handlerError(e);
-        // setToastProperties({
-        //   title: ToastTitle.Error,
-        //   message: error.Message,
-        //   type: ToastType.Error,
-        //   show: true,
-        // });
-      } finally {
-        btnStatus.value = false;
-      }
+      setRequest();
+      btnStatus.value = true;
+      await putUserById(user.value.IdUser, request.value);
+      btnStatus.value = false;
     };
 
     const setDate = (nDate: string) => {

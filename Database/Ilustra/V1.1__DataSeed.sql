@@ -8,4 +8,4 @@ INSERT INTO UserType (userType,description) VALUES ('ADMIN', 'Usuario administra
 INSERT INTO UserType (userType,description) VALUES ('CLIENT', 'Usuario cliente');
 INSERT INTO UserType (userType,description) VALUES ('ALLY', 'Usuario aliado');
 
-INSERT INTO [User] (idPerson,username,password,idUserType) VALUES (100001,'joavalos','123456',100001);
+INSERT INTO [User] (idPerson,username,password,idUserType) VALUES (100001,'joavalos','$2a$11$gTa4e0eB5q4qbju.DT0jXe.SXAozpF/eUc5GWOW0Ej6nHp6sLH5bW',100001);

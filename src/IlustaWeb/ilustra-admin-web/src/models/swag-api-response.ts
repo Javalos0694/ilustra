@@ -33,3 +33,45 @@ export interface PersonResponse {
     BornDate: string,
     PhoneNumber: string,
 }
+
+//PRODUCT
+export interface ProductResponse {
+    IdProduct: number,
+    IdProductCategory: number,
+    ProductName: string,
+    Description: string,
+    BasePrice: number,
+    IsAvailable: boolean
+}
+
+export interface ProductsResponse {
+    Products: ProductResponse[],
+    Total: number
+}
+
+//COLOR
+export interface ColorResponse {
+    IdColor: number,
+    ColorName: string,
+    ColorCode: string,
+    BasePrice: number,
+    IsAvailable: boolean
+}
+
+export interface ColorsResponse {
+    Colors: ColorResponse[],
+    Total: number
+}
+
+//CATEGORY
+
+export interface CategoriesResponse {
+    Categories: CategoryResponse[],
+    Total: number
+}
+
+export interface CategoryResponse {
+    IdProductCategory: number,
+    Category: string,
+    Description?: string
+}

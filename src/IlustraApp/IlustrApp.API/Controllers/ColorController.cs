@@ -2,6 +2,7 @@
 using IlustraApp.Core.Bussiness.BColor.Response;
 using IlustraApp.Core.Bussiness.BColor.Validate;
 using IlustraApp.Infrastructure.Repository.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -9,6 +10,7 @@ namespace IlustrApp.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     public class ColorController : BaseController
     {
         private readonly IColorRepository ColorRepository;
@@ -73,6 +75,7 @@ namespace IlustrApp.API.Controllers
             if (color == null) return ResultResponse(new Result { Code = Result.NOT_FOUND, Type = "color_not_found", Message = "Color not found" });
 
             color.IsAvailable = !color.IsAvailable;
+            await BaseRepository.SaveChangesAsync();
             return ResultResponse(new Result());
         }
 
@@ -84,6 +87,7 @@ namespace IlustrApp.API.Controllers
             if (color == null) return ResultResponse(new Result { Code = Result.NOT_FOUND, Type = "color_not_found", Message = "Color not found" });
 
             color.Deleted = true;
+            await BaseRepository.SaveChangesAsync();
             return ResultResponse(new Result());
         }
     }

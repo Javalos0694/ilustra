@@ -1,6 +1,5 @@
 <template>
   <VDataTable
-    hide-no-data
     no-data-text="No results"
     hover
     :headers="headers"
@@ -25,16 +24,28 @@
       </tr>
     </template>
     <template
-      v-slot:item.Actions
+      v-slot:item.Actions="{ item }"
       v-if="headers.some((x) => x.title == 'Actions')"
     >
-      <div>Hay acciones</div>
+      <div class="d-flex">
+        <v-btn
+          class="bg-grey-darken-4 text-white mr-3"
+          @click="() => selecItemRow(item)"
+        >
+          <v-icon>mdi-pencil</v-icon>
+        </v-btn>
+        <v-btn class="bg-red text-white" @click="() => deleteItem(item)">
+          <v-icon>mdi-delete</v-icon>
+        </v-btn>
+      </div>
     </template>
-    <template
-      v-slot:item.Switch
-      v-if="headers.some((x) => x.title == 'Switch')"
-    >
-      <div>Switch</div>
+    <template v-slot:item.IsAvailable="{ item }">
+      <v-switch
+        v-model="item.IsAvailable"
+        hide-details
+        color="success"
+        @click="() => toogleAvailableStatus(item)"
+      ></v-switch>
     </template>
   </VDataTable>
 </template>
@@ -47,6 +58,7 @@ import { VDataTable } from "vuetify/lib/labs/components.mjs";
 export default defineComponent({
   name: "data-table",
   components: { VDataTable },
+  emits: ["selectItem", "deleteItem", "toogleAvailable"],
   props: {
     headers: {
       type: Array<HeaderDataTable>,
@@ -65,17 +77,32 @@ export default defineComponent({
       default: false,
     },
   },
-  setup(props) {
+  setup(props, { emit }) {
     const headers = computed(() => props.headers);
     const items = computed(() => props.items);
     const loading = computed(() => props.loading);
     const keyItem = computed(() => "item." + props.key);
+
+    const selecItemRow = (item: any) => {
+      emit("selectItem", item);
+    };
+
+    const deleteItem = (item: any) => {
+      emit("deleteItem", item);
+    };
+
+    const toogleAvailableStatus = (item: any) => {
+      emit("toogleAvailable", item);
+    };
 
     return {
       headers,
       items,
       keyItem,
       loading,
+      selecItemRow,
+      deleteItem,
+      toogleAvailableStatus,
     };
   },
 });

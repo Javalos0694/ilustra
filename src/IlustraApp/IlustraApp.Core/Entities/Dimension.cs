@@ -14,7 +14,7 @@ namespace IlustraApp.Core.Entities
         public string DimensionName { get; set; } = null!;
         public string DimensionCoode { get; set; } = null!;
         public decimal BasePrice { get; set; }
-        public bool? IsAvailable { get; set; }
+        public bool IsAvailable { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public bool Deleted { get; set; }

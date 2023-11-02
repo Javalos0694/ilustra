@@ -22,19 +22,26 @@ const actions = () => {
         return initUserRequest;
     }
 
+    const clearParams = () => {
+        params = { token: true }
+    }
+
     const getUsers = async () => {
         const users = await api.get<UsersResponse>("User/users", params)
+        clearParams();
         return users;
     }
 
     const getUserAccount = async () => {
         const user = await api.get<PersonResponse>("User/account", params);
+        clearParams();
         return user;
     }
 
     const getUserById = async (id: number) => {
         params.id = id;
         const user = await api.get<PersonResponse>("User", params);
+        clearParams();
         return user;
     }
 
@@ -42,6 +49,14 @@ const actions = () => {
         params.id = id;
         params.body = request;
         const result = await api.put("User/update", params);
+        clearParams();
+        return result;
+    }
+
+    const deleteUser = async (id: number) => {
+        params.id = id;
+        const result = await api.delete("User/delete", params);
+        clearParams();
         return result;
     }
 
@@ -50,7 +65,8 @@ const actions = () => {
         getUsers,
         getUserAccount,
         getUserById,
-        putUserById
+        putUserById,
+        deleteUser
     }
 }
 

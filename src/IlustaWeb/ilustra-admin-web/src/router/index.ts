@@ -1,5 +1,6 @@
 import { useAuthStore } from '@/store/auth'
 import { storeToRefs } from 'pinia';
+import { ecommerceRoutes } from './ecommerce.routes';
 import { type RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
@@ -12,29 +13,10 @@ const routes: RouteRecordRaw[] = [
         }
     },
     {
-        path: '/dashboard',
-        alias: '/',
-        name: 'Main',
-        component: () => import("@/views/Main/Dashboard.vue"),
-        meta: {
-            requireAuth: true
-        }
-    },
-    {
-        path: '/users',
-        name: 'Users',
-        component: () => import("@/views/User/Users.vue"),
-        meta: {
-            requireAuth: true
-        }
-    },
-    {
-        path: '/account',
-        name: 'Account',
-        component: () => import("@/views/User/Account.vue"),
-        meta: {
-            requireAuth: true
-        }
+        path: '/',
+        name: 'Layout',
+        component: () => import('@/components/base/layout.vue'),
+        children: ecommerceRoutes
     }
 ]
 

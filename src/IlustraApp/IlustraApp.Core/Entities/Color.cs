@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace IlustraApp.Core.Entities
+﻿namespace IlustraApp.Core.Entities
 {
     public partial class Color
     {
@@ -14,7 +11,7 @@ namespace IlustraApp.Core.Entities
         public string ColorName { get; set; } = null!;
         public string ColorCode { get; set; } = null!;
         public decimal BasePrice { get; set; }
-        public byte[] ImageColor { get; set; } = null!;
+        public byte[]? ImageColor { get; set; } = null!;
         public bool IsAvailable { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
