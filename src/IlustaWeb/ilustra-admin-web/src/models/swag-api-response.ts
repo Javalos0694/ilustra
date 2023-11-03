@@ -75,3 +75,18 @@ export interface CategoryResponse {
     Category: string,
     Description?: string
 }
+
+//DIMENSION
+
+export interface DimensionsResponse {
+    Dimensions: DimensionResponse[],
+    Total: number
+}
+
+export interface DimensionResponse {
+    IdDimension: number,
+    DimensionName: string,
+    DimensionCode: string,
+    BasePrice: number,
+    IsAvailable: boolean
+}

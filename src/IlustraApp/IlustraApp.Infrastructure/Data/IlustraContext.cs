@@ -351,10 +351,10 @@ namespace IlustraApp.Infrastructure.Data
 
                 entity.Property(e => e.Deleted).HasColumnName("deleted");
 
-                entity.Property(e => e.DimensionCoode)
-                    .HasMaxLength(10)
+                entity.Property(e => e.DimensionCode)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
-                    .HasColumnName("dimensionCoode");
+                    .HasColumnName("dimensionCode");
 
                 entity.Property(e => e.DimensionName)
                     .HasMaxLength(10)

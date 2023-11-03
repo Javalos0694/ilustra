@@ -33,7 +33,7 @@ namespace IlustraApp.Core.Bussiness.BDimension.Validate
             newDimension = new Dimension()
             {
                 DimensionName = Request.DimensionName,
-                DimensionCoode = Request.DimensionCode,
+                DimensionCode = Request.DimensionCode,
                 BasePrice = Request.BasePrice,
                 IsAvailable = Request.IsAvailable,
             };

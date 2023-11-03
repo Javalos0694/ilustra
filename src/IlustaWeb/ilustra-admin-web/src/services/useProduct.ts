@@ -16,6 +16,10 @@ const actions = () => {
         return request;
     }
 
+    const clearParams = () => {
+        params = { token: true }
+    }
+
     const getProducts = async () => {
         const products = await api.get<ProductsResponse>("Product/products", params);
         return products;
@@ -24,12 +28,14 @@ const actions = () => {
     const getProductById = async (id: number) => {
         params.id = id;
         const product = await api.get<ProductResponse>("Product", params);
+        clearParams();
         return product;
     }
 
     const createProduct = async (request: ProductRequest) => {
         params.body = request;
         const product = await api.post("Product/create", params);
+        clearParams();
         return product;
     }
 
@@ -38,20 +44,21 @@ const actions = () => {
         params.body = request;
 
         const product = await api.put("Product/update", params);
+        clearParams();
         return product;
     }
 
     const toogleAvailable = async (id: number) => {
         params.id = id;
-
         const product = await api.put("Product/update/available", params);
+        clearParams();
         return product;
     }
 
     const deleteProduct = async (id: number) => {
         params.id = id;
-
         const product = await api.delete("Product", params);
+        clearParams();
         return product;
     }
 

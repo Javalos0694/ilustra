@@ -179,8 +179,8 @@ CREATE TABLE ColorXProduct
 CREATE TABLE Dimension
 (
 	idDimension INT IDENTITY(100001,1) NOT NULL,
-	dimensionName VARCHAR(10) NOT NULL,
-	dimensionCoode VARCHAR(10) NOT NULL,
+	dimensionName VARCHAR(20) NOT NULL,
+	dimensionCode VARCHAR(10) NOT NULL,
 	basePrice DECIMAL(9,2) NOT NULL,
 	isAvailable BIT NOT NULL DEFAULT 1,
 	createdAt DATETIME NOT NULL DEFAULT GETDATE(),

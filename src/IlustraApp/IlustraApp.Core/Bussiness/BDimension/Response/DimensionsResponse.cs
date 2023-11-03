@@ -28,7 +28,7 @@ namespace IlustraApp.Core.Bussiness.BDimension.Response
         {
             IdDimension = dimension.IdDimension;
             DimensionName = dimension.DimensionName;
-            DimensionCode = dimension.DimensionCoode;
+            DimensionCode = dimension.DimensionCode;
             BasePrice = dimension.BasePrice;
             IsAvailable = dimension.IsAvailable;
         }

@@ -50,3 +50,13 @@ export interface CategoryRequest {
     Category: string,
     Description: string
 }
+
+//DIMENSION
+
+export interface DimensionRequest {
+    IdDimension: number,
+    DimensionName: string,
+    DimensionCode: string,
+    BasePrice: number,
+    IsAvailable: boolean
+}

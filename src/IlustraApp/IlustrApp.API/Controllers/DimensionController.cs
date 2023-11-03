@@ -64,7 +64,7 @@ namespace IlustrApp.API.Controllers
         }
 
         [HttpPut]
-        [Route("togleAvailable/{idDimension}")]
+        [Route("toogleAvailable/{idDimension}")]
         public async Task<IActionResult> ToogleAvailable(int idDimension)
         {
             var dimension = await DimensionRepository.GetDimensionById(idDimension);

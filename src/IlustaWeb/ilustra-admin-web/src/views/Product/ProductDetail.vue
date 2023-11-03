@@ -73,7 +73,12 @@
                     <h3 class="text-grey-darken-1">Colors</h3>
                   </v-card-title>
                   <v-card-text>
-                    <v-col cols="6"> Select colors </v-col>
+                    <v-col cols="12">
+                      <ColorBox
+                        :items="colors.Colors"
+                        @setSelected="setSelected"
+                      />
+                    </v-col>
                   </v-card-text>
                 </v-card>
               </v-col>
@@ -95,21 +100,27 @@
 </template>
 
 <script lang="ts">
-import { ColorsResponse, ProductResponse } from "@/models/swag-api-response";
+import {
+  ColorResponse,
+  ColorsResponse,
+  ProductResponse,
+} from "@/models/swag-api-response";
 import router from "@/router";
 import { useColor } from "@/services/useColor";
 import { useProduct } from "@/services/useProduct";
 import { defineComponent, onMounted, ref } from "vue";
 
 import titleBack from "@/components/base/title-back.vue";
+import ColorBox from "@/components/base/Inputs/color-box.vue";
 
 export default defineComponent({
   name: "ProductDetail",
-  components: { titleBack },
+  components: { titleBack, ColorBox },
   setup() {
     const idProduct = ref(0);
     const product = ref<ProductResponse>({} as ProductResponse);
     const colors = ref<ColorsResponse>({} as ColorsResponse);
+    const colorsSelected = ref<ColorResponse[]>([]);
 
     const { getProductById } = useProduct();
     const { getColors } = useColor();
@@ -120,6 +131,10 @@ export default defineComponent({
 
     const getAllColors = async () => {
       colors.value = await getColors();
+    };
+
+    const setSelected = (arraySelected: any[]) => {
+      colorsSelected.value = [...arraySelected];
     };
 
     const init = () => {
@@ -136,6 +151,9 @@ export default defineComponent({
     return {
       idProduct,
       product,
+      colors,
+      colorsSelected,
+      setSelected,
     };
   },
 });

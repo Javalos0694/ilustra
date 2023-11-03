@@ -45,7 +45,7 @@ namespace IlustraApp.Core.Bussiness.BDimension.Validate
         private void SetDimension()
         {
             DimensionUpdated.DimensionName = Request.DimensionName;
-            DimensionUpdated.DimensionCoode = Request.DimensionCode;
+            DimensionUpdated.DimensionCode = Request.DimensionCode;
             DimensionUpdated.BasePrice = Request.BasePrice;
             DimensionUpdated.IsAvailable = Request.IsAvailable;
         }
