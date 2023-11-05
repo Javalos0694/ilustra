@@ -48,6 +48,7 @@ namespace IlustrApp.API.Controllers
 
             await ProductRepository.CreateProduct(validate.NewProduct);
             await BaseRepository.SaveChangesAsync();
+            result.Id = validate.NewProduct.IdProduct;
             return ResultResponse(result);
         }
 

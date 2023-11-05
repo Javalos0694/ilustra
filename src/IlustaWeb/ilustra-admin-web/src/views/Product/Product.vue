@@ -11,12 +11,17 @@
       >
     </v-col>
   </v-row>
-  <dataTable :headers="headers" :items="products.Products" key="IdProduct" />
+  <dataTable
+    :headers="headers"
+    :items="products.Products"
+    key="IdProduct"
+    @selectItem="selectItem"
+  />
 </template>
 
 <script lang="ts">
 import { HeaderDataTable } from "@/models/swag-api-models";
-import { ProductsResponse } from "@/models/swag-api-response";
+import { ProductResponse, ProductsResponse } from "@/models/swag-api-response";
 import { useProduct } from "@/services/useProduct";
 import { setHeadersDataTable } from "@/utils/data-table";
 import { defineComponent, onMounted, ref } from "vue";
@@ -33,9 +38,10 @@ export default defineComponent({
     const products = ref<ProductsResponse>({} as ProductsResponse);
     const headers = ref<HeaderDataTable[]>([]);
     const productHeaders = [
-      "IdColor",
-      "ColorName",
-      "ColorCode",
+      "IdProduct",
+      "Category",
+      "ProductName",
+      "Description",
       "BasePrice",
       "IsAvailable",
       "Actions",
@@ -43,6 +49,10 @@ export default defineComponent({
 
     const goToNewProduct = () => {
       router.push("/products/detail");
+    };
+
+    const selectItem = (item: ProductResponse) => {
+      router.push(`/products/detail/${item.IdProduct}`);
     };
 
     onMounted(async () => {
@@ -54,6 +64,7 @@ export default defineComponent({
       products,
       headers,
       goToNewProduct,
+      selectItem,
     };
   },
 });

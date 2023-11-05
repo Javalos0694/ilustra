@@ -18,26 +18,37 @@
                   <v-col cols="12" md="6">
                     <v-text-field
                       label="ProductName"
-                      v-model="product.ProductName"
+                      v-model="request.ProductName"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" md="6">
                     <v-text-field
                       label="Description"
-                      v-model="product.Description"
+                      v-model="request.Description"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" md="6">
                     <v-text-field
                       label="BasePrice"
-                      v-model="product.BasePrice"
+                      v-model="request.BasePrice"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" md="6">
-                    <v-text-field
-                      label="ProductCategory"
-                      v-model="product.IdProductCategory"
-                    ></v-text-field>
+                    <!-- <v-select
+                      label="Category"
+                      :items="categories.Categories"
+                      item-value="IdProductCategory"
+                      item-title="Category"
+                      v-model="request.IdProductCategory"
+                    ></v-select> -->
+                    <inputSelect
+                      :items="categories.Categories"
+                      keyValue="Category"
+                      value="IdProductCategory"
+                      label="Category"
+                      :valueSelected="request.IdProductCategory"
+                      @setItemSelected="setItemSelected"
+                    />
                   </v-col>
                 </v-row>
               </v-col>
@@ -52,7 +63,9 @@
           <v-card-actions>
             <v-row>
               <v-col cols="12">
-                <v-btn class="bg-cyan-lighten-2 text-grey-lighten-5"
+                <v-btn
+                  class="bg-cyan-lighten-2 text-grey-lighten-5"
+                  @click="saveProduct"
                   >Save</v-btn
                 >
               </v-col>
@@ -64,36 +77,7 @@
     <v-divider class="my-5"></v-divider>
     <v-row>
       <v-col cols="12">
-        <v-card class="px-4">
-          <v-card-text>
-            <v-row>
-              <v-col cols="12" md="6">
-                <v-card>
-                  <v-card-title>
-                    <h3 class="text-grey-darken-1">Colors</h3>
-                  </v-card-title>
-                  <v-card-text>
-                    <v-col cols="12">
-                      <ColorBox
-                        :items="colors.Colors"
-                        @setSelected="setSelected"
-                      />
-                    </v-col>
-                  </v-card-text>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-card-text>
-          <v-card-actions class="mt-5">
-            <v-row>
-              <v-col cols="12">
-                <v-btn class="bg-cyan-lighten-2 text-grey-lighten-5"
-                  >Save</v-btn
-                >
-              </v-col>
-            </v-row>
-          </v-card-actions>
-        </v-card>
+        <ColorSection :idProduct="idProduct" />
       </v-col>
     </v-row>
   </v-container>
@@ -101,47 +85,71 @@
 
 <script lang="ts">
 import {
-  ColorResponse,
-  ColorsResponse,
+  CategoriesResponse,
   ProductResponse,
 } from "@/models/swag-api-response";
 import router from "@/router";
-import { useColor } from "@/services/useColor";
 import { useProduct } from "@/services/useProduct";
 import { defineComponent, onMounted, ref } from "vue";
 
 import titleBack from "@/components/base/title-back.vue";
+import inputSelect from "@/components/base/Inputs/input-select.vue";
 import ColorBox from "@/components/base/Inputs/color-box.vue";
+import ColorSection from "@/components/Product/ColorSection.vue";
+import { useCategory } from "@/services/useCategory";
 
 export default defineComponent({
   name: "ProductDetail",
-  components: { titleBack, ColorBox },
+  components: { titleBack, ColorBox, ColorSection, inputSelect },
   setup() {
-    const idProduct = ref(0);
-    const product = ref<ProductResponse>({} as ProductResponse);
-    const colors = ref<ColorsResponse>({} as ColorsResponse);
-    const colorsSelected = ref<ColorResponse[]>([]);
+    const {
+      getProductById,
+      createProduct,
+      initProductRequest,
+      updateProductById,
+    } = useProduct();
+    const { getAllCategories } = useCategory();
 
-    const { getProductById } = useProduct();
-    const { getColors } = useColor();
+    const idProduct = ref(0);
+    const isEdit = ref(false);
+    const product = ref<ProductResponse>({} as ProductResponse);
+    const request = ref(initProductRequest());
+    const categories = ref<CategoriesResponse>({} as CategoriesResponse);
 
     const getProductDetail = async () => {
       product.value = await getProductById(idProduct.value);
     };
 
-    const getAllColors = async () => {
-      colors.value = await getColors();
+    const setRequest = () => {
+      Object.assign(request.value, product.value);
     };
 
-    const setSelected = (arraySelected: any[]) => {
-      colorsSelected.value = [...arraySelected];
+    const saveProduct = async () => {
+      if (!isEdit.value) {
+        const response = await createProduct(request.value);
+        idProduct.value = response.Id;
+      } else {
+        await updateProductById(idProduct.value, request.value);
+      }
     };
 
-    const init = () => {
+    const setCategories = async () => {
+      categories.value = await getAllCategories();
+    };
+
+    const setItemSelected = (id: any) => {
+      request.value.IdProductCategory = id;
+    };
+
+    const init = async () => {
       idProduct.value =
         Number.parseInt(router.currentRoute.value.params.id.toString()) || 0;
-      if (idProduct.value != 0) getProductDetail();
-      getAllColors();
+      setCategories();
+      if (idProduct.value != 0) {
+        await getProductDetail();
+        setRequest();
+        isEdit.value = true;
+      }
     };
 
     onMounted(() => {
@@ -151,9 +159,10 @@ export default defineComponent({
     return {
       idProduct,
       product,
-      colors,
-      colorsSelected,
-      setSelected,
+      request,
+      categories,
+      saveProduct,
+      setItemSelected,
     };
   },
 });

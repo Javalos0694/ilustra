@@ -37,9 +37,20 @@ namespace IlustraApp.Infrastructure.Repository
             return await Context.ProductCategory.FirstOrDefaultAsync(x => x.IdProductCategory == idProductCategory && !x.Deleted);
         }
 
-        public async Task<List<Product>> GetProducts()
+        public async Task<IEnumerable<dynamic>> GetProducts()
         {
-            return await Context.Product.Where(x => !x.Deleted).ToListAsync();
+            //return await Context.Product.Where(x => !x.Deleted).ToListAsync();
+            return await Context.Product.Join(Context.ProductCategory, p => p.IdProductCategory, pc => pc.IdProductCategory, (p, pc) => new
+            {
+                p.IdProduct,
+                p.ProductName,
+                p.BasePrice,
+                p.IsAvailable,
+                p.IdProductCategory,
+                p.Description,
+                pc.Category,
+                p.Deleted
+            }).Where(x => !x.Deleted).ToListAsync();
         }
 
         public async Task<List<Product>> GetProductsByCategory(int categoryId)

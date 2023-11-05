@@ -23,7 +23,7 @@ namespace IlustraApp.Core.Bussiness.BProduct.Validate
         public Result ValidateRequest()
         {
             if (string.IsNullOrEmpty(Request.ProductName)) return new Result { Code = Result.BAD_REQUEST, Type = "wrong_data", Message = "Product name is required" };
-            if (Request.ProductCategory == 0) return new Result { Code = Result.BAD_REQUEST, Type = "wrong_data", Message = "Product category is required" };
+            if (Request.IdProductCategory == 0) return new Result { Code = Result.BAD_REQUEST, Type = "wrong_data", Message = "Product category is required" };
             return new Result();
         }
         public void SetProduct()
@@ -31,7 +31,8 @@ namespace IlustraApp.Core.Bussiness.BProduct.Validate
             NewProduct = new Product()
             {
                 ProductName = Request.ProductName,
-                IdProductCategory = Request.ProductCategory,
+                Description = Request.Description,
+                IdProductCategory = Request.IdProductCategory,
                 IsAvailable = Request.IsAvailable,
                 BasePrice = Request.BasePrice,
             };

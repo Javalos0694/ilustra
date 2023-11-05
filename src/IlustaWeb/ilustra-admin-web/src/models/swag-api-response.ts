@@ -38,6 +38,7 @@ export interface PersonResponse {
 export interface ProductResponse {
     IdProduct: number,
     IdProductCategory: number,
+    Category: string,
     ProductName: string,
     Description: string,
     BasePrice: number,

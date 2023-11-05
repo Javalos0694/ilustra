@@ -27,7 +27,8 @@ export interface UpdatePersonRequest {
 
 //PRODUCT
 export interface ProductRequest {
-    ProductCategory: number,
+    IdProduct: number,
+    IdProductCategory: number,
     ProductName: string,
     Description?: string,
     BasePrice: number,
@@ -59,4 +60,11 @@ export interface DimensionRequest {
     DimensionCode: string,
     BasePrice: number,
     IsAvailable: boolean
+}
+
+//COLOR PRODUCT
+
+export interface ColorProductRequest {
+    Colors: ColorRequest[],
+    IdProduct: number
 }

@@ -6,7 +6,7 @@ namespace IlustraApp.Infrastructure.Repository.Interfaces
     {
         Task CreateProduct(Product product);
         Task<Product> GetProductById(int productId);
-        Task<List<Product>> GetProducts();
+        Task<IEnumerable<dynamic>> GetProducts();
         Task<List<Product>> GetProductsByCategory(int categoryId);
         Task CreateProductCategory(ProductCategory productCategory);
         Task<ProductCategory> GetProductCategoryById(int idProductCategory);

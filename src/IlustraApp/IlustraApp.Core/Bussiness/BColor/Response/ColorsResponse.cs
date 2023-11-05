@@ -16,6 +16,15 @@ namespace IlustraApp.Core.Bussiness.BColor.Response
 
             Total = Colors.Count;
         }
+        public ColorsResponse(List<ColorXproduct> colors)
+        {
+            Colors = new();
+            foreach (var color in colors)
+            {
+                Colors.Add(new ColorClass(color));
+            }
+            Total = Colors.Count;
+        }
     }
 
     public class ColorClass
@@ -32,6 +41,14 @@ namespace IlustraApp.Core.Bussiness.BColor.Response
             ColorCode = color.ColorCode;
             BasePrice = color.BasePrice;
             IsAvailable = color.IsAvailable;
+        }
+        public ColorClass(ColorXproduct color)
+        {
+            IdColor = color.IdColorNavigation.IdColor;
+            ColorName = color.IdColorNavigation.ColorName;
+            ColorCode = color.IdColorNavigation.ColorCode;
+            BasePrice = color.IdColorNavigation.BasePrice;
+            IsAvailable = color.IdColorNavigation.IsAvailable;
         }
     }
 }

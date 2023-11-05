@@ -125,7 +125,10 @@ namespace IlustraApp.Infrastructure.Data
 
             modelBuilder.Entity<ColorXproduct>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.IdColorProduct)
+                    .HasName("PK_ColorProduct");
+
+                entity.Property(e => e.IdColorProduct).HasColumnName("idColorProduct");
 
                 entity.ToTable("ColorXProduct");
 

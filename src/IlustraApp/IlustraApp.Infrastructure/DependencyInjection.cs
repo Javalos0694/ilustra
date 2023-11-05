@@ -1,4 +1,6 @@
 ﻿using IlustraApp.Infrastructure.Data;
+using IlustraApp.Infrastructure.Queries;
+using IlustraApp.Infrastructure.Queries.Interfaces;
 using IlustraApp.Infrastructure.Repository;
 using IlustraApp.Infrastructure.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +21,9 @@ namespace IlustraApp.Infrastructure
             services.AddTransient<IColorRepository, ColorRepository>();
             services.AddTransient<IPersonRepository, PersonRepository>();
             services.AddTransient<IDimensionRepository, DimensionRepository>();
+            services.AddTransient<IColorProductRepository, ColorProductRepository>();
+
+            services.AddScoped<IColorProductQuery, ColorProductQuery>();
 
             return services;
         }

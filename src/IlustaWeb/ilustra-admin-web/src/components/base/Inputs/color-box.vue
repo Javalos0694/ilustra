@@ -7,7 +7,10 @@
       :style="{
         backgroundColor: `${item.ColorCode ? item.ColorCode : '#fff'}`,
       }"
-      :class="[item.IsAvailable ? '' : 'disabled']"
+      :class="[
+        item.IsAvailable ? '' : 'disabled',
+        selectedArray.some((x) => x.IdColor == item.IdColor) ? 'selected' : '',
+      ]"
       @click="selectItem(item)"
     >
       <v-tooltip activator="parent" location="top">{{
@@ -18,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { computed, defineComponent } from "vue";
 
 export default defineComponent({
   name: "ColorBox",
@@ -28,24 +31,27 @@ export default defineComponent({
       type: Array<any>,
       default: () => [],
     },
+    itemsSelected: {
+      type: Array<any>,
+      default: () => [],
+    },
   },
   setup(props, { emit }) {
     const itemsArray = computed(() => props.items);
-    const selectedArray = ref<Array<any>>([]);
+    const selectedArray = computed(() => props.itemsSelected);
 
     const selectItem = (item: any) => {
-      if (selectedArray.value.every((x) => x != item)) {
-        selectedArray.value.push(item);
+      let array = [...selectedArray.value];
+      if (array.every((x) => x.IdColor != item.IdColor)) {
+        array.push(item);
       } else {
-        let array = [...selectedArray.value];
-        array = array.filter((x) => x != item);
-        selectedArray.value = array;
+        array = array.filter((x) => x.IdColor != item.IdColor);
       }
-      setArraySelected();
+      setArraySelected(array);
     };
 
-    const setArraySelected = () => {
-      emit("setSelected", selectedArray.value);
+    const setArraySelected = (array: any[]) => {
+      emit("setSelected", array);
     };
 
     return {

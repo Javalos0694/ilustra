@@ -7,9 +7,10 @@ const actions = () => {
 
     const initProductRequest = () => {
         const request: ProductRequest = {
+            IdProduct: 0,
             BasePrice: 0,
             IsAvailable: false,
-            ProductCategory: 0,
+            IdProductCategory: 0,
             ProductName: '',
             Description: ''
         }
@@ -34,7 +35,7 @@ const actions = () => {
 
     const createProduct = async (request: ProductRequest) => {
         params.body = request;
-        const product = await api.post("Product/create", params);
+        const product = await api.post<any>("Product/create", params);
         clearParams();
         return product;
     }

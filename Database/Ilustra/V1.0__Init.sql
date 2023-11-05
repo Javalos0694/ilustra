@@ -170,8 +170,10 @@ CREATE TABLE Color
 
 CREATE TABLE ColorXProduct
 (
+	idColorProduct INT NOT NULL IDENTITY(100001, 1),
 	idColor INT NOT NULL,
 	idProduct INT NOT NULL,
+	CONSTRAINT PK_ColorProduct PRIMARY KEY (idColorProduct),
 	CONSTRAINT FK_Color_Product FOREIGN KEY (idColor) REFERENCES Color,
 	CONSTRAINT FK_Product_Color FOREIGN KEY (idProduct) REFERENCES Product,
 )
