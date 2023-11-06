@@ -6,22 +6,23 @@ using System.Data;
 
 namespace IlustraApp.Infrastructure.Queries
 {
-    public class ColorProductQuery : IColorProductQuery
+    public class BaseQuery : IBaseQuery
     {
         private readonly string ConnectionString;
-        public ColorProductQuery(IConfiguration configuration)
+        public BaseQuery(IConfiguration configuration)
         {
             ConnectionString = ConfigurationExtensions.GetConnectionString(configuration, "IlustraEntities");
         }
 
-        public async Task DeleteColorsByProduct(int[] colors, int idProduct)
+        public async Task DeleteAtributtesByProduct(int[] items, int idProduct, string itemType)
         {
             using SqlConnection connection = new(ConnectionString);
 
-            await connection.QueryAsync("spDelete_ColorsByProduct", new
+            await connection.QueryAsync("spDelete_ItemsByProduct", new
             {
-                Colors = string.Join(',', colors),
-                IdProduct = idProduct
+                Items = string.Join(',', items),
+                IdProduct = idProduct,
+                ItemType = itemType
             },
             commandType: CommandType.StoredProcedure);
         }

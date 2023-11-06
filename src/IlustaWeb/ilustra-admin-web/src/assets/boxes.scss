@@ -8,9 +8,27 @@
     .box-item {
         width: 35px;
         height: 35px;
-        border-radius: 50%;
         border: 1px solid #c3c3c3;
         cursor: pointer;
+
+        &.circle {
+            border-radius: 50%;
+        }
+
+        &.square {
+            line-height: 35px;
+            font-weight: bold;
+
+            &:hover {
+                background-color: #000;
+                color: #fff;
+            }
+
+            &.selected {
+                background-color: #000;
+                color: #fff;
+            }
+        }
 
         &:hover {
             filter: brightness(80%);

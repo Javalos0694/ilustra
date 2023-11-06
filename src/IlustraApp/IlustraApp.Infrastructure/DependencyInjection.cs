@@ -22,8 +22,9 @@ namespace IlustraApp.Infrastructure
             services.AddTransient<IPersonRepository, PersonRepository>();
             services.AddTransient<IDimensionRepository, DimensionRepository>();
             services.AddTransient<IColorProductRepository, ColorProductRepository>();
+            services.AddTransient<IDimensionProductRepository, DimensionProductRepository>();
 
-            services.AddScoped<IColorProductQuery, ColorProductQuery>();
+            services.AddScoped<IBaseQuery, BaseQuery>();
 
             return services;
         }

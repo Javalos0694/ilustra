@@ -193,8 +193,10 @@ CREATE TABLE Dimension
 
 CREATE TABLE DimensionXProduct
 (
+	idDimensionProduct INT NOT NULL IDENTITY(100001, 1),
 	idDimension INT NOT NULL,
 	idProduct INT NOT NULL,
+	CONSTRAINT PK_DimensionProduct PRIMARY KEY (idDimensionProduct),
 	CONSTRAINT FK_Dimension_Product FOREIGN KEY (idDimension) REFERENCES Dimension,
 	CONSTRAINT FK_Product_Dimension FOREIGN KEY (idProduct) REFERENCES Product,
 )

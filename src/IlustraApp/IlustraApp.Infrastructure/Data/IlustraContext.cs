@@ -377,7 +377,10 @@ namespace IlustraApp.Infrastructure.Data
 
             modelBuilder.Entity<DimensionXproduct>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.IdDimensionProduct)
+                .HasName("PK_DimensionProduct");
+
+                entity.Property(e => e.IdDimensionProduct).HasColumnName("IdDimensionProduct");
 
                 entity.ToTable("DimensionXProduct");
 

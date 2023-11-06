@@ -76,8 +76,11 @@
     </v-row>
     <v-divider class="my-5"></v-divider>
     <v-row>
-      <v-col cols="12">
+      <v-col cols="12" md="6">
         <ColorSection :idProduct="idProduct" />
+      </v-col>
+      <v-col cols="12" md="6">
+        <DimensionSection :idProduct="idProduct" />
       </v-col>
     </v-row>
   </v-container>
@@ -96,11 +99,12 @@ import titleBack from "@/components/base/title-back.vue";
 import inputSelect from "@/components/base/Inputs/input-select.vue";
 import ColorBox from "@/components/base/Inputs/color-box.vue";
 import ColorSection from "@/components/Product/ColorSection.vue";
+import DimensionSection from "@/components/Product/DimensionSection.vue";
 import { useCategory } from "@/services/useCategory";
 
 export default defineComponent({
   name: "ProductDetail",
-  components: { titleBack, ColorBox, ColorSection, inputSelect },
+  components: { titleBack, ColorBox, ColorSection, inputSelect, DimensionSection },
   setup() {
     const {
       getProductById,

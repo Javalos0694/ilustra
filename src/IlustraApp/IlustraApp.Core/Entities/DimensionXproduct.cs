@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace IlustraApp.Core.Entities
+﻿namespace IlustraApp.Core.Entities
 {
     public partial class DimensionXproduct
     {
+        public int IdDimensionProduct { get; set; }
         public int IdDimension { get; set; }
         public int IdProduct { get; set; }
 

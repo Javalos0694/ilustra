@@ -16,9 +16,9 @@ namespace IlustrApp.API.Controllers
     {
         private readonly IColorProductRepository ColorProductRepository;
         private readonly IProductRepository ProductRepository;
-        private readonly IColorProductQuery ColorProductQuery;
+        private readonly IBaseQuery ColorProductQuery;
         private readonly IBaseRepository BaseRepository;
-        public ColorProductController(IColorProductRepository colorProductRepository, IColorProductQuery colorProductQuery, IProductRepository productRepository, IBaseRepository baseRepository)
+        public ColorProductController(IColorProductRepository colorProductRepository, IBaseQuery colorProductQuery, IProductRepository productRepository, IBaseRepository baseRepository)
         {
             ColorProductRepository = colorProductRepository;
             ColorProductQuery = colorProductQuery;
@@ -45,7 +45,7 @@ namespace IlustrApp.API.Controllers
 
             if (result.Code != Result.OK) return ResultResponse(result);
 
-            await ColorProductQuery.DeleteColorsByProduct(validate.ColorsDeleted, product.IdProduct);
+            await ColorProductQuery.DeleteAtributtesByProduct(validate.ColorsDeleted, product.IdProduct, "color");
             await ColorProductRepository.AddColorsByProduct(validate.ColorsByProduct);
             await BaseRepository.SaveChangesAsync();
             return ResultResponse(result);
@@ -63,7 +63,7 @@ namespace IlustrApp.API.Controllers
 
             if (result.Code != Result.OK) return ResultResponse(result);
 
-            await ColorProductQuery.DeleteColorsByProduct(validate.colorsDeleted, product.IdProduct);
+            await ColorProductQuery.DeleteAtributtesByProduct(validate.colorsDeleted, product.IdProduct, "color");
             return ResultResponse(result);
         }
     }

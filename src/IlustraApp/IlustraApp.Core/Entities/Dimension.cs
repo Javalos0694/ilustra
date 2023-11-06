@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace IlustraApp.Core.Entities
+﻿namespace IlustraApp.Core.Entities
 {
     public partial class Dimension
     {

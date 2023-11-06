@@ -68,3 +68,9 @@ export interface ColorProductRequest {
     Colors: ColorRequest[],
     IdProduct: number
 }
+
+//DIMENSION PRODUCT
+export interface DimensionProductRequest {
+    Dimensions: DimensionRequest[],
+    IdProduct: number
+}
